@@ -1,0 +1,2 @@
+https://kswa2qi5za.execute-api.us-east-1.amazonaws.com/Prod  post
+get info
