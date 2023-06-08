@@ -14,7 +14,7 @@ namespace CreateHealthData.Tests
 {
     public class CreatePatientDemographicData
     {
-        private AWSCredentials credentials = new BasicAWSCredentials("AKIAVOI2WZDF6POOYMEW", "AsUEWttFDBLeXUa++sMOdL2o3zZOwoNDV8esDpas");
+        private AWSCredentials credentials = new BasicAWSCredentials("", "");
         [Fact]
         public async void AddDemographicData()
         {

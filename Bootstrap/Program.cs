@@ -41,7 +41,9 @@ namespace ServerlessDM.bootstrap
             //NOTE: Change this with your Access key and Secret key that has Dynamo DB permission to create and do CRUD operations to table
             //      This is for DEMO ONLY, secret and access keys SHOULD NOT BE HARDCODED IN THE CODE. 
             //      We need this to build the tables and populate it with demo data.
-            AWSCredentials credentials = new BasicAWSCredentials("", "");
+            AWSCredentials credentials = new BasicAWSCredentials(
+                "", "");
+
 
             client = new AmazonDynamoDBClient(credentials, config);
         }
