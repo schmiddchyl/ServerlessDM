@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html>
+	<head >
+		<style>
+			.title-div {
+			  position: absolute;
+			  top: 2%;
+			  left: 2%;
+			  
+			  width: 96%;
+			  height: 10%;
+			  border: 3px solid #000;
+			  background-color: #f0f0f0;
+			
+			  font-family: arial;
+			  font-size: 8vh;
+			}
+			.person-div {
+			  position: absolute;
+			  top: 15%;
+			  left: 2%;
+			  
+			  width: 25%;
+			  height: 45%;
+			  border: 3px solid #000;
+			  background-color: #f0f0f0;
+			}
+			.head-div {
+			  position: absolute;
+			  top: 15%;
+			  left: 28%;
+			   display: flex;
+			
+			  width: 100%;
+			  height: 8%;
+			  border: 3px solid #000;
+			  background-color: #f0f0f0;
+			  		font-family: arial;
+			  font-size: 3vh;
+			  overflow: auto;
+			}
+			
+			
+			.grid-div {
+			  position: absolute;
+			  top: 24%;
+			  left: 28%;
+			   display: flex;
+			   
+			   flex-direction: column;
+			  width: 100%;
+			  height: 96%;
+			  border: 3px solid #000;
+			  background-color: #f0f0f0;
+			  overflow: auto;
+			}
+			
+			.result-div {
+			  width:70%;
+			display: flex;
+			align-items: stretch;
+			flex-direction: coulmn;
+			  font-family: arial;  font-size: 2.5vh;
+			  border: 3px solid #000;
+			  background-color: #1eeeee;
+			}
+			
+			.ptimage {
+				top 24%;
+				left:53%;
+				width: 46%;
+				height:99%;
+				border: 3px solid #000;
+			  background-color: #1eeeee;
+			    position: absolute;
+			}
+			.docname {
+				border: 3px solid #000;
+			width: 15%;
+			  // position: absolute;
+				background-color: #1eeeee;
+			}
+			.doctype {
+				border: 3px solid #000;
+			//	left: 16%;
+				width: 15%;
+			  // position: absolute;
+				background-color: #1eeeee;
+			}
+			.clinrevdate {
+				border: 3px solid #000;
+			//	left: 32%; 
+			width: 15%;
+			 //  position: absolute;
+				background-color: #1eeeee;
+			}
+			.restricted {
+				border: 3px solid #000;
+				//left: 48%;
+				width: 15%;
+			 //  position: absolute;
+				background-color: #1eeeee;
+			}
+			.imdiv {
+				border: 3px solid #000;
+				left: 64%;
+				width: 35%;
+			 //  position: absolute;
+				background-color: #1eeeee;
+			}
+			.imdiv img{
+				width: 100%;
+				height: 100%;
+			}
+			
+			.genborder {
+				left: 0%;
+				width: 52%;
+				height:99%;
+				border: 3px solid #000;
+
+			      position: absolute;
+			}
+			.genitem {
+				display: inline-block;
+			    vertical-align: middle;
+				line-height: 180%;
+				text-align: left;
+		
+				left: 0%;
+				width: 98%;
+				height:18.5%;
+				border: 3px solid #000;
+				font-family: arial;
+			  font-size: 3vh;
+			  background-color: #1eeeee;
+			}
+		
+			
+			
+			.search-div {
+			  position: absolute;
+			  top: 65%;
+			  left:2%;
+			  font-family: arial;  font-size: 2.5vh;
+			  width: 25%;
+			  height:30%;
+			  border: 3px solid #000;
+			  float: left;
+			  background-color: #1eeeee;
+			}
+		html,body{
+    width: 100%;
+    height: 100%;
+    margin: 0; /* Space from this element (entire page) and others*/
+    padding: 0; /*space from content and border*/
+    border: solid blue;
+    border-width: thin;
+    overflow:hidden;
+    display:block;
+    box-sizing: border-box;
+}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+       
+		<title>Document Lookup</title>
+
+		<script>
+			var apiRoot = 'https://ggt83mji85.execute-api.us-east-1.amazonaws.com/v1/s3?key='
+			 function getMRNs() {
+				$.ajax({
+					url: "https://ubx5nukqzc.execute-api.us-east-1.amazonaws.com/test/healthdynamodbmanager",
+					method: "POST",
+					crossDomain: true,
+					data: '{"Index":"GSI2","HashKey":"'+ mrn +'","SortKey":"' + encounter + '"}',
+					
+					contentType: "application/json",
+					dataType: "json",
+					success: function (data) {
+						dt=data;
+					},
+					complete: function() {
+					}
+				});
+			} // end getMRNS
+			function navigate(mrn, encounter) {
+				getMedicalImages(mrn, encounter);
+				getPersonalInfo(mrn, encounter);
+			}
+			function getPersonalInfo(mrn) {
+				var dt ='';
+				mrn = 'MRN#' + mrn;
+				var table = '';
+				$.ajax({
+					url: "https://ubx5nukqzc.execute-api.us-east-1.amazonaws.com/test/healthdynamodbmanager",
+					method: "POST",
+					crossDomain: true,
+					data: '{"Index":"GSI2","HashKey":' +
+								'"PATIENT","SortKey":"' + mrn + 
+								'","QueryType":"MRN_LIST"}',
+					
+					contentType: "application/json",
+					dataType: "json",
+					success: function (data) {
+						dt=data;
+						var value = dt[0];
+						$("#dob").html('DOB ' + value.PK); 
+						$("#patientFirstName").html(value.ItemData.FirstName);
+						$("#patientLastName").html(value.ItemData.LastName);
+						$("#phonenumber").html(value.ItemData.Phone);
+					    $("#address").html(value.ItemData.Address);
+					
+					},
+					complete: function() {
+						var value = dt[0];
+						var table = "<table><thead><tr><th>PK</th><th>SK</th><th>ItemData</th></tr></thead><tbody>";
+						table += "<tr><td>" + value.PK + "</td><td>" 
+							+ value.SK + "</td><td align=left>" 
+							+ JSON.stringify(value.ItemData) + "</td></tr>";
+						if (value.ItemData.Bucket){
+							let bucketValue = value.ItemData.Bucket + '/'
+								+ encodeURIComponent(value.SK)	+ '/'	
+								+ encodeURIComponent(value.ItemData.DocName);
+								let imgUrl = apiRoot + bucketValue;
+								$.get(imgUrl, function(data, status){
+									console.log('data');	
+									let imgSRC = '<img src="data:image/jpeg;base64, ' + data + '" width="100%" height="100%"">';
+										$("#patientImage").html(imgSRC);
+								}, "text" );				
+						}
+					} // complete function
+				}); // ajax
+			}//getpersonalinfo			
+		
+			function getMedicalImages(mrn, encounter) {
+		
+			var dt ='';
+			mrn = 'MRN#' + mrn;
+			encounter = 'ENCOUNTER#' + encounter;
+			$.ajax({
+				url: "https://ubx5nukqzc.execute-api.us-east-1.amazonaws.com/test/healthdynamodbmanager",
+				method: "POST",
+				crossDomain: true,
+				data: '{"Index":"GSI2","HashKey":"'+ mrn +'","SortKey":"' + encounter + '"}',
+				
+				contentType: "application/json",
+				dataType: "json",
+				success: function (data) {
+					dt=data;
+				},
+				complete: function() {
+					//var results = "<table><thead><tr><th>Document Name</th><th>Documenty Type</th><th>Image/ //Date</th><th>Thumbnail</th</tr></thead><tbody>";
+					let ct = 0;
+					var results = '';//'<table>';//<tr height="0"><td><div id= "resultHeadDiv' + ct +'"><td>';;
+						/*results += '<div id="docname'+ ct +'" class ="docname">DocumentName</div>';
+						results += '<div id="doctype'+ ct +'" class ="doctype">Document Type</div>';
+						results += '<div id="clinrevdate'+ ct +'" class ="clinrevdate">RelevantDate</div>';		
+						results += '<div id="restricted'+ ct +'" class ="restricted">Restricted</div>';
+						results += '<div id="imdiv'+ ct +'" class ="imdiv">Thumb</div>';		
+						results += '<td></div>';
+						*/
+					var elems = dt.length;	
+					
+					$.each(dt, function(index, value) {
+						if (value.ItemData.Bucket) {
+							let bucketValue = value.ItemData.Bucket + '/'
+								+ encodeURIComponent(value.GSI2PK)	+ '/'	
+							//	+ value.GSI2PK	+ '/'
+								+ encodeURIComponent(value.ItemData.DocName);
+							let imgUrl = apiRoot + bucketValue;
+							$.get(imgUrl, function(data, status){
+								ct++;
+								console.log('data');
+								results += '<div id= "resultDiv' + ct + '" class= "result-div">';
+								let docNameDiv = '<div id="docname'+ ct +'" class ="docname">'+ value.ItemData.DocName + '</div>';
+								results += docNameDiv;
+								
+								let docTypeDiv = '<div id="doctype'+ ct +'" class ="doctype">'+ value.ItemData.typeid + '</div>';
+								results += docTypeDiv;
+								
+								let clinrevdateDiv = '<div id="clinrevdate'+ ct +'" class ="clinrevdate">'+ value.ItemData.RelevantDate + '</div>';
+								results += clinrevdateDiv;
+								
+								let restrictedDiv = '<div id="restricted'+ ct +'" class ="restricted">'+ value.ItemData.restricted + '</div>';
+								results += restrictedDiv;
+								
+								
+			//					table += "<tr><td>" + value.PK + "</td><td>" + value.SK + "</td><td align=left>" +
+			//					JSON.stringify(value.ItemData) + "</td></tr>";
+			
+								let imgDiv = '<div id="imagediv'+ ct+'" class ="imdiv" ><img  src="data:image/jpeg;base64, ' 
+										+ data + '"  "></div></div><br>';
+									//table += '<tr><td span=3>' + imgSRC +'</td></tr>';
+								results += imgDiv;
+								if (!--elems) {
+								 // results += </div>   table += "</tbody></table>";
+									$("#griddiv").html(results + '</table>');
+								}
+							}, "text" );				
+						}
+					}) // each function 		
+				} // complete function
+		  });
+		} // end get medicalimages function
+		
+
+		
+		</script>
+			
+		
+	</head>
+	<body  border="1" style="text-align:center;">
+		<div id ="titlediv" class="title-div">Medical Document Lookup</div>
+	<div id ="searchdiv" class="search-div">
+	   Give me encounter info and docs+metadata for :<br>
+		<table>
+			<tr align="left">
+				<td>
+					<button onclick="navigate(0,40)">MRN 0, ENC 0</button>
+				</td>
+				<td>
+					<button onclick="navigate(0,30)">MRN 0, ENC 30</button>
+				</td>
+			<tr align="left">
+				<td>
+					<button align="right" onclick="navigate(0,50)">MRN 0, ENC 50</button>
+				</td>
+				<td>
+					<button onclick="navigate(0,90)">MRN 0, ENC 90</button>
+				</td>
+			</tr>
+			<tr align="left">
+				<td>
+					<button onclick="navigate( 100,180)">MRN 100, ENC 180</button>
+				</td>
+				<td>
+					<button onclick="navigate(100,190)">MRN 100, ENC 190</button>
+				</td>
+			</tr>
+			<tr align="left">
+				<td>	
+					<button onclick="navigate(100,100)">MRN 100, ENC 100</button>
+				</td>
+				<td>	
+					<button onclick="navigate(100,160)">MRN 100, ENC 160</button>
+				</td>
+			</tr>
+			<tr align="left">
+				<td>	
+					<button onclick="navigate(200,200)">MRN 200, ENC 200</button>
+				</td>
+				<td>
+					<button onclick="navigate(200,220)">MRN 200, ENC 220</button>
+				</td>
+			</tr>
+			<tr align="left">
+				<td>	
+					<button onclick="navigate(200,230)">MRN 200, ENC 230</button>
+				<td>
+					<button onclick="navigate(200,210)">MRN 200, ENC 210</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+		
+		<div id="persondiv" class="person-div">
+			<div id="pidiv"				class="genborder">
+				<div id="dob" 		 		class="genitem">foo</div>
+				<div id="patientFirstName" 	class="genitem" >foo</div>
+				<div id="patientLastName" 	class="genitem"	>foo</div>
+				<div id="phonenumber" 		class="genitem"	>fos</div>
+				<div id="address" 			class="genitem">foso</div>
+				
+			</div>
+			<div id="patientImage" 	class="ptimage">image go here</div>
+		</div>
+			
+		<div id="resultHead" class ="head-div">
+			<div id= "resultDiv1" class="result-div">
+				<div id="docnameh" class ="docname">Document Name</div>
+				<div id="doctypeh" class ="doctype">Document Type</div>
+				<div id="clinrevdateh" class = "clinrevdate">Clinical<br>Date</div>
+				<div id="restricted1h" class ="restricted">Restricted<BR>Content</div>
+				<div id="imagedivh" class ="imdiv" >Thumbnail<br>Image></div>
+			
+			</div>
+		</div>	
+			
+		<div id="griddiv" class ="grid-div">
+		
+		</div>
+		<!--<div id="imagecontent"></div>-->
+	
+	</body>
+</html>

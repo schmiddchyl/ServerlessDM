@@ -62,9 +62,7 @@ namespace QueryHealthData
 
         /*
         public async Task<String> FunctionHandler(
-    HealthDocumentQueryInputModel queryInput, ILambdaContext context)
-        {
-            return "ok";
+            HealthDocumentQueryInputModel queryInput, ILambdaContext context) {  return "ok";
         }*/
 
 
@@ -87,28 +85,56 @@ namespace QueryHealthData
             {
                 sortKeyValues.Add(value);
             }
-
             DynamoDBContext dbContext = new DynamoDBContext(_client);
 
-            List<HealthDocumentDataQuery> result = null; 
-            try
+            List<HealthDocumentDataQuery> result = null;
+            if (queryInput.QueryType == "MRN_LIST")
             {
-                result = await dbContext.QueryAsync<HealthDocumentDataQuery>
-                (
-                    queryInput.HashKey,
-                    QueryOperator.Equal,
-                    sortKeyValues,
-                    new DynamoDBOperationConfig
-                    {
-                        OverrideTableName = "HealthData",
-                        IndexName = queryInput.Index
-                    }
-                ).GetRemainingAsync();
-        }  catch (Exception ex) {
-                Console.WriteLine("Exception in queryexecute:"
-                    
-                    + ex.Message);
+                try
+                {
+                    result = await dbContext.QueryAsync<HealthDocumentDataQuery>
+                    (
+                        queryInput.HashKey,
+                        QueryOperator.BeginsWith,
+                        sortKeyValues,
+                        new DynamoDBOperationConfig
+                        {
+                            OverrideTableName = "HealthData",
+                            IndexName = queryInput.Index
+                        }
+                    ).GetRemainingAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception in queryexecute:" + ex.Message);
+                }
+
             }
+            else
+            {
+                
+                try
+                {
+                    result = await dbContext.QueryAsync<HealthDocumentDataQuery>
+                    (
+                        queryInput.HashKey,
+                        QueryOperator.Equal,
+                        sortKeyValues,
+                        new DynamoDBOperationConfig
+                        {
+                            OverrideTableName = "HealthData",
+                            IndexName = queryInput.Index
+                        }
+                    ).GetRemainingAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception in queryexecute:" + ex.Message);
+                }
+                
+            }
+           
+     
             return result;
         }
 

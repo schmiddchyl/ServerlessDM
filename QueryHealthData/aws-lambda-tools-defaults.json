@@ -21,7 +21,7 @@
     "function-subnets"      : "",
     "function-security-groups" : "",
     "tracing-mode"             : "PassThrough",
-    "environment-variables"    : "\"SecretKey\"=\"AsUEWttFDBLeXUa++sMOdL2o3zZOwoNDV8esDpas\";\"AccessKey\"=\"AKIAVOI2WZDF6POOYMEW\"",
+    "environment-variables"    : "\"SecretKey\"=\"";\"AccessKey=\"\"",
     "image-tag"                : "",
     "function-description"     : ""
 }

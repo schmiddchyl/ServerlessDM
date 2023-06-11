@@ -9,6 +9,7 @@
   <!-- 374255044811-->
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.102.19" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

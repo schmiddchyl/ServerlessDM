@@ -14,7 +14,8 @@ namespace QueryHealthData.Models
 
         public string HashKey { get; set; }
 
-
         public String SortKey { get; set; }
+
+        public String QueryType { get; set; }   
     }
 }
