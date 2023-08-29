@@ -1,13 +1,14 @@
-﻿using Amazon.DynamoDBv2.DataModel;
+﻿
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CreateHealthData.Models
+namespace PatientSearch.Models
 {
     [DynamoDBTable("HealthData")]
-    public class HealthData
+    public class HealthDocumentData
     {
         [DynamoDBHashKey]
         public string PK { get; set; }
@@ -32,8 +33,11 @@ namespace CreateHealthData.Models
         public string? GSI4PK { get; set; }
 
         [DynamoDBGlobalSecondaryIndexRangeKey]
-        public string GSI4SK { get; set; }
+        public string? GSI4SK { get; set; }
+
         public Dictionary<string, string> ItemData { get; set; }
+
+     //   public string DocumentContent { get; set; }
 
     }
 }

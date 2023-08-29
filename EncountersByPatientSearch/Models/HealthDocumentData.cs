@@ -1,13 +1,15 @@
-﻿using Amazon.DynamoDBv2.DataModel;
+﻿
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CreateHealthData.Models
+namespace EncountersByPatientSearch.Models
 {
     [DynamoDBTable("HealthData")]
-    public class HealthData
+    public class HealthDocumentData
     {
         [DynamoDBHashKey]
         public string PK { get; set; }
@@ -32,8 +34,20 @@ namespace CreateHealthData.Models
         public string? GSI4PK { get; set; }
 
         [DynamoDBGlobalSecondaryIndexRangeKey]
-        public string GSI4SK { get; set; }
-        public Dictionary<string, string> ItemData { get; set; }
+        public string? GSI4SK { get; set; }
+
+
+        [DynamoDBGlobalSecondaryIndexHashKey]
+        public string? GSI5PK { get; set; }
+
+        [DynamoDBGlobalSecondaryIndexRangeKey]
+        public string? GSI5SK { get; set; }
+
+
+
+        [DynamoDBProperty(Converter = typeof(InnerMapOrStringConverter))]
+        public Dictionary<string, object> ItemData { get; set; }
+        //   public string DocumentContent { get; set; }
 
     }
 }

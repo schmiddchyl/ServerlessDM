@@ -14,20 +14,26 @@ namespace CreateHealthData.Tests
 {
     public class CreatePatientDemographicData
     {
-        private AWSCredentials credentials = new BasicAWSCredentials("", "");
+       
+        AWSCredentials credentials = new BasicAWSCredentials(
+            Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
+            Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY")
+        );
+
         [Fact]
         public async void AddDemographicData()
         {
             var client = new AmazonLambdaClient(credentials, RegionEndpoint.USEast1);
 
-            HealthInput input = createPatient("Dan", "Schmidt", 0, "2001_09_23", "false", "123 fake st", "555-555-1212");
+            HealthInput input = createPatient("Dan", "Schmidt", 7474, "2001_09_23", "false",
+                "123 fake st", "555-555-1212", "Male", "49y");
             await DoLambda(client, input);
 
-            input = createPatient("Theo", "Schmidt", 0, "2011_04_23", "false", "123 fake st", "555-555-1212");
-            await DoLambda(client, input);
+       //     input = createPatient("Theo", "Schmidt", 0, "2011_04_23", "false", "123 fake st", "555-555-1212");
+       //     await DoLambda(client, input);
 
-            input = createPatient("Brian", "Finch", 0, "1966_03_11", "false", "444 real st", "333-555-1212");
-            await DoLambda(client, input);
+         //   input = createPatient("Brian", "Finch", 0, "1966_03_11", "false", "444 real st", "333-555-1212");
+          //  await DoLambda(client, input);
         }
 
         private static async Task DoLambda(AmazonLambdaClient client, HealthInput input)
@@ -47,7 +53,8 @@ namespace CreateHealthData.Tests
         }
 
       
-        private HealthInput createPatient(String firstName, String lastName, int mrn, String dob, String restricted, String address, String phone)
+        private HealthInput createPatient(String firstName, String lastName, 
+            int mrn, String dob, String restricted, String address, String phone, String gender, String age)
         {
             String MRN = "MRN#" + mrn;
             String DOB = dob;
@@ -62,10 +69,15 @@ namespace CreateHealthData.Tests
             healthdata.SK = MRN;
             healthdata.GSI2PK = MRN;
             healthdata.GSI2SK = dob;
-            healthdata.ItemData.Add("FirstName", firstName);
-            healthdata.ItemData.Add("LastName", lastName);
+            healthdata.GSI3PK = lastName;
+            healthdata.GSI4SK = lastName;
+            healthdata.GSI4PK = firstName;
+            healthdata.GSI3SK = firstName;
+
+            healthdata.ItemData.Add("Age", age);
+            healthdata.ItemData.Add("Gender", gender);
             healthdata.ItemData.Add("CreatedDate", relevantDate);
-            healthdata.ItemData.Add("restricted", restricted);
+            healthdata.ItemData.Add("Vip", "Vip");
             healthdata.ItemData.Add("Address", address);
             healthdata.ItemData.Add("Phone", phone);
            
