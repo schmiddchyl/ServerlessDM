@@ -16,8 +16,8 @@ namespace CreateHealthData.Tests
     {
        
         AWSCredentials credentials = new BasicAWSCredentials(
-            Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
-            Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY")
+            Environment.GetEnvironmentVariable("AKIAVOI2WZDFY4CPOOOJ"),
+            Environment.GetEnvironmentVariable("lgVaRbCF/ZkJwlgqN3XKvlenJybzLkyGqFQ+nqRz")
         );
 
         [Fact]

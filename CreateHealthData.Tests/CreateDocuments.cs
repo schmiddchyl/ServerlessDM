@@ -13,14 +13,15 @@ namespace CreateHealthData.Tests;
 
 public class CreateDocuments
 {
-    private AWSCredentials credentials = new BasicAWSCredentials("", "");
+    //AKIAVOI2WZDFY4CPOOOJ
+    private AWSCredentials credentials = new BasicAWSCredentials("AKIAVOI2WZDFY4CPOOOJ", "lgVaRbCF/ZkJwlgqN3XKvlenJybzLkyGqFQ+nqRz");
 
     [Fact]
     public async void AddDocumentData()
     {
         var client = new AmazonLambdaClient(credentials, RegionEndpoint.USEast1);
 
-        for (int i = 0; i < 250; i++)
+        for (int i = 0; i < 1; i++)
         {
             HealthInput input = generateDocuments(i);
 
@@ -36,7 +37,7 @@ public class CreateDocuments
             var streamReader = new StreamReader(response.Payload);
             var result = streamReader.ReadToEnd();
             Console.WriteLine(result);
-            System.Threading.Thread.Sleep(150);
+            System.Threading.Thread.Sleep(75);
         }
     }
 
@@ -81,15 +82,15 @@ public class CreateDocuments
         healthdata.SK = "0";
         healthdata.GSI2PK = MRN;
         healthdata.GSI2SK = Encounter;
-        healthdata.ItemData.Add("Bucket", "medicalimages-dcs");
-        healthdata.ItemData.Add("DocName", i + ".jpg");
+        healthdata.ItemData.Add("Bucket", "hcw-img");
+        healthdata.ItemData.Add("DocName", "doc_" + i + ".jpg");
         healthdata.ItemData.Add("RelevantDate", relevantDate);
         healthdata.ItemData.Add("restricted", restricted);
         healthdata.ItemData.Add("typeid", "medical-aws-111-2222-333");
         healthdata.ItemData.Add("type-surename", "medical-aws");
         HealthInput input = new HealthInput();
         input.HealthData = healthdata;
-        input.path = MRN + "/" +healthdata.ItemData["DocName"];
+        input.path = MRN + "/" + Encounter + "/"  +healthdata.ItemData["DocName"];
         input.content = Base64FromJpg(i);
         return input;
     }

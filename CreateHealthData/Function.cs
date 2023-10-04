@@ -76,13 +76,11 @@ namespace CreateHealthData
             //     Console.WriteLine("Finish executing Function {0} @ {1}", context.FunctionName, DateTime.Now);
         }
 
-        private async System.Threading.Tasks.Task<bool> WriteToS3Async(string bucketName,
-            string path, string content)
+        private async System.Threading.Tasks.Task<bool> WriteToS3Async(string bucketName, string path, string content)
         {
+
             try
             {
-
-
                 byte[] data = Convert.FromBase64String(content);
                 using (MemoryStream stream = new MemoryStream(data))
                 {
@@ -97,7 +95,6 @@ namespace CreateHealthData
                             InputStream = stream
                         };
                         var response = await client.PutObjectAsync(request);
-
                         return true;
                     }
                 }

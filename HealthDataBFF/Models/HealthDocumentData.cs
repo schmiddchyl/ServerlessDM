@@ -1,8 +1,7 @@
 ﻿
 using Amazon.DynamoDBv2.DataModel;
 
-
-namespace ItemSearch.Models
+namespace HealtDataBFF.Models
 {
     [DynamoDBTable("HealthData")]
     public class HealthDocumentData

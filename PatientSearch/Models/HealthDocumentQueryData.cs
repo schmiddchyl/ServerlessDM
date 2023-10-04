@@ -35,6 +35,12 @@ namespace PatientSearch.Models
         [DynamoDBGlobalSecondaryIndexRangeKey]
         public string? GSI4SK { get; set; }
 
+        [DynamoDBGlobalSecondaryIndexHashKey]
+        public string? GSI5PK { get; set; }
+
+        [DynamoDBGlobalSecondaryIndexRangeKey]
+        public string? GSI5SK { get; set; }
+
         public Dictionary<string, string> ItemData { get; set; }
 
      //   public string DocumentContent { get; set; }

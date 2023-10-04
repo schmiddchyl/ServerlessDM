@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace PatientSearch.Utils
 {
@@ -16,14 +17,16 @@ namespace PatientSearch.Utils
             foreach (HealthDocumentData result in healthDocuments)
             {
                 Patient patient = new Patient();
-                patient.PatientId = result.SK;
-                patient.Age = result.ItemData["Age"];
-                patient.Gender = result.ItemData["Gender"];
-                patient.BirthDate = result.PK;
-                patient.Firstname = result.GSI4PK;
-                patient.Lastname = result.GSI4SK;
+                patient.id = result.SK;
+                patient.age = result.ItemData["Age"];
+                patient.gender = result.ItemData["Gender"];
+                patient.birthDate = result.PK;
+                patient.firstName = result.GSI4PK;
+                patient.lastName = result.GSI4SK;
                 patient.ResultStatus = "Complete";
-                patient.Vip = result.ItemData["Vip"];
+                patient.isVIP = result.ItemData["Vip"];
+                patient.masterPatientIndexNumber = result.GSI5PK;
+                patient.ssn = result.GSI5SK;
                 patients.Add(patient);
             }
             return patients;
